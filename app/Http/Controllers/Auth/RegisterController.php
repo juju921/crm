@@ -76,9 +76,9 @@ class RegisterController extends Controller
      *
      * @return Response
      */
-    public function redirectToProvider($provider)
+    public function redirectToProvider()
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver('twitter')->redirect();
     }
 
     /**
@@ -86,20 +86,21 @@ class RegisterController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback()
     {
 
         try {
-            $user = Socialite::driver($provider)->user();
+            $user = Socialite::driver('twitter')->user();
+            dd($user);exit;
 
         } catch (Exception $e) {
 
-            return redirect('auth/'.$provider);
+            return redirect('auth/twitter');
 
         }
 
 
-        $authUser = $this->findOrCreateUser($user, $provider);
+        $authUser = $this->findOrCreateUser($user);
         Auth::login($authUser, true);
         return redirect($this->redirectTo);
     }
@@ -108,7 +109,7 @@ class RegisterController extends Controller
     /**
      * Find user based on Oauth details, or create one if none is found.
      */
-    public function findOrCreateUser($user, $provider)
+    public function findOrCreateUser($user)
     {
         $authUser = User::where('provider_id', $user->id)->first();
 
@@ -121,7 +122,7 @@ class RegisterController extends Controller
         return User::create([
             'name'     => $user->name,
             'email'    => $user->email,
-            'avatar' => $githubUser->avatar,
+            'avatar' => $user->avatar,
             'facebook_id' => $user->id
         ]);
     }

@@ -41,7 +41,10 @@ return [
         'redirect'      => env('http://localhost:8000/auth/facebook/callback'),
     ],
 
-
-
+    'twitter' => [
+        'client_id'     => env('l8mjj8ZGn0eOviD0ARinewNOp'),
+        'client_secret' => env('SnDL7BlgTMhJa9WxTr3aAl1EQ7ldHmxNecd43Blco3zBT06klH'),
+        'redirect'      => env('http://localhost:8000/auth/twitter/callback'),
+    ],
 
 ];

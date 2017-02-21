@@ -1,4 +1,4 @@
- <div class="app-container ">
+ <div class="app-container " id="app">
 
         <nav class="navbar navbar-default" id="navbar">
             <div class="container-fluid">
