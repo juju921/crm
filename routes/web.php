@@ -25,8 +25,6 @@ Route::get('/home', 'HomeController@index');
 
 
 //Clients
-
-//User
 Route::get('/clients/create','ClientsController@create');
 Route::post('/clients','ClientsController@store');
 Route::get('/clients/index', 'ClientsController@index');
