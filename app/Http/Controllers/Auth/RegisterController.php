@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\SocialProvider;
 use App\User;
+use Validator;
 use DB;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
 use Socialite;
 
 
@@ -113,10 +111,9 @@ class RegisterController extends Controller
                 ['name' => $socialUser->getName()],
                 ['avatar'=> $socialUser->getAvatar()]
             );
-                        //dd($user);exit;
 
 
-            $user->socialProviders()->create(
+            DB::table('SocialProviders')->insert(
                 ['provider_id' => $socialUser->getId(), 'provider' => $provider]
             );
         }

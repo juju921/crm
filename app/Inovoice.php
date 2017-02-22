@@ -17,6 +17,7 @@ class Inovoice extends Model
 
     //client
     public function  client(){
+
         return $this->hasOne('App\Client');
      }
 
