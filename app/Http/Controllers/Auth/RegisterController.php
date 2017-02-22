@@ -106,7 +106,6 @@ class RegisterController extends Controller
         $socialProvider = DB::table('SocialProviders')->where('provider_id',$socialUser->getId())->first();
         if(!$socialProvider)
         {
-            dd($socialUser);exit;
 
             //create a new user and provider
             $user = User::firstOrCreate(
@@ -114,6 +113,9 @@ class RegisterController extends Controller
                 ['name' => $socialUser->getName()],
                 ['avatar'=> $socialUser->getAvatar()]
             );
+                        //dd($user);exit;
+
+
             $user->socialProviders()->create(
                 ['provider_id' => $socialUser->getId(), 'provider' => $provider]
             );
