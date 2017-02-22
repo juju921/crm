@@ -36,15 +36,15 @@ return [
     ],
 
     'facebook' => [
-        'client_id'     => env('275911285779388'),
-        'client_secret' => env('635d9bf7f62993caae9409035de96698'),
-        'redirect'      => env('http://localhost:8000/auth/facebook/callback'),
+        'client_id'     => '275911285779388',
+        'client_secret' => '635d9bf7f62993caae9409035de96698',
+        'redirect'      => 'http://localhost:8000/auth/facebook/callback',
     ],
 
     'twitter' => [
-        'client_id'     => env('l8mjj8ZGn0eOviD0ARinewNOp'),
-        'client_secret' => env('SnDL7BlgTMhJa9WxTr3aAl1EQ7ldHmxNecd43Blco3zBT06klH'),
-        'redirect'      => env('http://localhost:8000/auth/twitter/callback'),
+        'client_id'     => 'l8mjj8ZGn0eOviD0ARinewNOp',
+        'client_secret' => 'SnDL7BlgTMhJa9WxTr3aAl1EQ7ldHmxNecd43Blco3zBT06klH',
+        'redirect'      => 'http://localhost:8000/auth/twitter/callback',
     ],
 
 ];

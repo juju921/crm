@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\SocialProvider;
 use App\User;
-use Auth;
-use Socialite;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
+use Socialite;
+
 
 class RegisterController extends Controller
 {
@@ -71,62 +74,56 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
-  /**
-     * Redirect the user to the provider authentication page.
-     *
-     * @return Response
-     */
-    public function redirectToProvider()
-    {
-        return Socialite::driver('twitter')->redirect();
-    }
-
-    /**
-     * Obtain the user information from provider.
-     *
-     * @return Response
-     */
-    public function handleProviderCallback()
-    {
-
-        try {
-            $user = Socialite::driver('twitter')->user();
-            dd($user);exit;
-
-        } catch (Exception $e) {
-
-            return redirect('auth/twitter');
-
-        }
-
-
-        $authUser = $this->findOrCreateUser($user);
-        Auth::login($authUser, true);
-        return redirect($this->redirectTo);
-    }
 
 
     /**
-     * Find user based on Oauth details, or create one if none is found.
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return Response
      */
-    public function findOrCreateUser($user)
+    public function redirectToProvider($provider)
     {
-        $authUser = User::where('provider_id', $user->id)->first();
-
-        if ($authUser) {
-
-            return $authUser;
+        return Socialite::driver($provider)->redirect();
+    }
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback($provider)
+    {
+        try
+        {
+            $socialUser = Socialite::driver($provider)->user();
 
         }
+        catch(\Exception $e)
+        {
+            return redirect('/');
+        }
+        //check if we have logged provider
+        //$socialProvider = SocialProvider::where('provider_id',$socialUser->getId())->first();
+        $socialProvider = DB::table('SocialProviders')->where('provider_id',$socialUser->getId())->first();
+        if(!$socialProvider)
+        {
+            dd($socialUser);exit;
 
-        return User::create([
-            'name'     => $user->name,
-            'email'    => $user->email,
-            'avatar' => $user->avatar,
-            'facebook_id' => $user->id
-        ]);
+            //create a new user and provider
+            $user = User::firstOrCreate(
+                 ['email' => $socialUser->getEmail()],
+                ['name' => $socialUser->getName()],
+                ['avatar'=> $socialUser->getAvatar()]
+            );
+            $user->socialProviders()->create(
+                ['provider_id' => $socialUser->getId(), 'provider' => $provider]
+            );
+        }
+        else
+            $user = $socialProvider->user;
+
+        auth()->login($user);
+        return redirect('/home');
     }
-
 
 
 }

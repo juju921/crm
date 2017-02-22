@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOuvragesTable extends Migration
+class CreateSocialProvidersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateOuvragesTable extends Migration
      */
     public function up()
     {
-        Schema::create('ouvrages', function (Blueprint $table) {
+        Schema::create('SocialProviders', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('refereces');
-            $table->char('libele');
-            $table->decimal('coef');
-            $table->decimal('prixht');
-            $table->integer('tva');
+            $table->integer('user_id')->unsigned()->references('id')->on('users');
+            $table->string('provider_id');
+            $table->string('provider');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateOuvragesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ouvrages');
+        Schema::dropIfExists('SocialProviders');
     }
 }
