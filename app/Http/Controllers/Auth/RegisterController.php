@@ -92,11 +92,13 @@ class RegisterController extends Controller
     {
         try
         {
-            $socialUser = Socialite::driver($provider)->user();
+            $socialUser = Socialite::driver($provider);
 
         }
         catch(\Exception $e)
+
         {
+
             return redirect('/');
         }
         //check if we have logged provider
@@ -113,9 +115,11 @@ class RegisterController extends Controller
             );
 
 
+
             DB::table('SocialProviders')->insert(
                 ['provider_id' => $socialUser->getId(), 'provider' => $provider]
             );
+            dd($user);exit;
         }
         else
             $user = $socialProvider->user;
