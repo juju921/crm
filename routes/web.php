@@ -15,8 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('auth/{provider}', 'Auth\RegisterController@redirectToProvider');
-Route::get('auth/{provider}/callback', 'Auth\RegisterController@handleProviderCallback');
+Route::get('auth/{provider}', ['as' => 'socialite', 'uses' => 'Auth\RegisterController@redirectToProvider']);
+Route::get('auth/{provider}/callback', ['as' => 'socialite_callback', 'uses' => 'Auth\RegisterController@handleProviderCallback']);
+
 
 Auth::routes();
 
